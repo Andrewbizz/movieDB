@@ -1,10 +1,15 @@
 import React from "react";
 import "../css/MovieCard.css";
 import * as Icon from "lucide-react";
+import { useMovieContext } from "../context/MovieContext";
 
 function MovieCard({ movie }) {
+  const { isFavorite, addToFav, removeFav } = useMovieContext();
+  const favorite = isFavorite(movie.id);
   function onFavouriteClick(e) {
-    console.log(e.target);
+    e.preventDefault();
+    if (favorite) removeFav(movie.id);
+    else addToFav(movie);
   }
   return (
     <div className="movie-card">
@@ -16,7 +21,10 @@ function MovieCard({ movie }) {
         {/* <h3>{movie.title}</h3> */}
 
         <div className="movie-overlay">
-          <button className="favourite-btn" onClick={onFavouriteClick}>
+          <button
+            className={`favourite-btn ${favorite ? "active" : ""}`}
+            onClick={onFavouriteClick}
+          >
             <Icon.Heart />
           </button>
         </div>
